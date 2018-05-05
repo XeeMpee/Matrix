@@ -60,8 +60,10 @@ inline Matrix<T>::Matrix(vector<vector<T> > passMatrix) {
 
 template<class T>
 inline Matrix<T>::Matrix() {
-	vector<vector<double> > vect = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
-	this->matrix = vect;
+
+	this->matrix.clear();
+	this->size[0] = 0;
+	this->size[1] = 0;
 }
 
 template<class T>
@@ -90,11 +92,28 @@ inline void Matrix<T>::setMatrix(vector<T> passVector) {
 template<class T>
 inline void Matrix<T>::clear(){
 	this->matrix.clear();
+	this->size[0] = 0;
+	this->size[1] = 0;
 }
 
 template<class T>
 inline void Matrix<T>::push(vector<T> pushVector){
+	if(this->size[0] == 0){
+		this->size[1] = pushVector.size();
+	}
+
+	if(this->size[0] != 0){
+		if(pushVector.size() != (unsigned int)this->size[1]){
+			MatrixSizeException exception("Vector should be thi same size as the rest of vectors in Matrix (rows)!");
+			exception.showDescription();
+			throw exception;
+		}
+	}
+
+
 	this->matrix.push_back(pushVector);
+	this->size[0] += 1;
+
 }
 
 //# Another operations:

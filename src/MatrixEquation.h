@@ -74,7 +74,7 @@ void MatrixEquation<T>::setEquation(vector<vector<T> > A, vector<T>  b){
 	this->b.clear();
 	this->x.clear();
 
-	this->A = A;
+	this->A.setMatrix(A);
 	this->b.push(b);
 
 	this->changedA = true;
@@ -91,10 +91,10 @@ Matrix<T> MatrixEquation<T>::solvingLU(){
 	T tmpCoeff;
 
 	tmpUpper.push(this->A[0]);
-	for(int i=1; i< this->A.size[0]-1; i++){
-		tmpCoeff = this->A[i][0] / tmpUpper[i-1][0];
-		vector<T> tmpVect = Matrix<T>::substractRows(this->A[i], tmpUpper[i-1], tmpCoeff);
-		cout << tmpVect[0] << tmpVect[1] << tmpVect[3];
+	for(int i=1; i< this->A.size[0]; i++){
+		tmpCoeff = this->A[i][0] / tmpUpper[0][0];
+		vector<T> tmpVect = Matrix<T>::substractRows(this->A[i], this->A[0], tmpCoeff);
+		cout << tmpVect[0] << tmpVect[1] << tmpVect[3] << endl;
 		tmpUpper.push(tmpVect);
 	}
 
