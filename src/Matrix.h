@@ -43,7 +43,7 @@ public:
 
 	//# Overload operatos:
 	Matrix<T> & operator= (vector<vector<T> > & passMatrix);
-	vector<T> operator[](size_t el);
+	vector<T>& operator[](size_t el);
 
 	//# PrintOuts:
 	void printInfo();
@@ -156,8 +156,9 @@ inline Matrix<T>&  Matrix<T>::operator= (vector<vector<T> > & passMatrix){
 }
 
 template<class T>
-inline vector<T> Matrix<T>::operator[](size_t el){
-	return this->matrix[el];
+inline vector<T>& Matrix<T>::operator[](size_t el){
+	vector<T>& retVal = matrix[el];
+	return retVal;
 }
 
 //# Print info about matrix:
