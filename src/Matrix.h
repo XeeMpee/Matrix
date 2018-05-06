@@ -35,6 +35,7 @@ public:
 	//# Basic operations:
 	void clear();
 	void push(vector<T> pushVector);
+	int maxInColumnIndex(int numOfColumn);
 
 	//# Operations on matrices:
 
@@ -134,6 +135,20 @@ inline void Matrix<T>::push(vector<T> pushVector){
 	this->size[0] += 1;
 
 }
+
+template<class T>
+int Matrix<T>::maxInColumnIndex(int numOfColumn){
+	int max = 0;
+	int maxIndex = 0;
+	for(unsigned int i=0; i<this->matrix.size(); i++){
+		if(this->matrix[i][numOfColumn] > max){
+			max = this->matrix[i][numOfColumn];
+			maxIndex = i;
+		}
+	}
+	return maxIndex;
+}
+
 
 //# Another operations:
 template<class T>

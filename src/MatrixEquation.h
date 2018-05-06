@@ -33,6 +33,8 @@ private:
 	//#Gauss (LU):
 	Matrix<T> gaussUpper;
 	Matrix<T> gaussLower;
+	Matrix<T> gaussB;
+	Matrix<T> gaussX;
 
 public:
 	//# Setters and getters:
@@ -88,14 +90,24 @@ template<class T>
 	T tmpCoeff;
 
 
-	for(int i=0; i< this->A.size[1]; i++){
+	for(int i=0; i< tmpUpper.size[1]; i++){
 		vector<T> coeffVect;
-		for(int j=i+1; j < this->A.size[0]; j++){
+		for(int j=i+1; j < tmpUpper.size[0]; j++){
+			if(tmpUpper[i][i] == 0){
+				int myMax = tmpUpper.maxInColumnIndex(i);
+				cout << myMax;
+				vector<T> tmpVect = tmpUpper[i];
+				tmpUpper[i] = tmpUpper[myMax];
+				tmpUpper[myMax] = tmpVect;
+				j--;
+				continue;
+			}
+
 			tmpCoeff = tmpUpper[j][i] / tmpUpper[i][i];
 			tmpLower[j][i] = tmpCoeff;
 			tmpUpper[j] = Matrix<T>::substractRows(tmpUpper[j], tmpUpper[i], tmpCoeff);
-			}
-		cout << endl;
+			tmpUpper[j][i] = 0;
+		}
 	}
 
 
@@ -105,6 +117,7 @@ template<class T>
 }
 
 //# UpperMatrix solving:
+
 
 //# PrintOuts:
 template<class T>
