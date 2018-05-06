@@ -18,7 +18,7 @@ using namespace std;
 int main() {
 	cout << "!!!Hello Darkness, my old friend!!!" << endl << endl; // prints !!!Hello World!!!
 
-	vector< vector<double> > passMatrix = {{1,2,3,4},{7,8,9,10},{12,25,36,42},{12,56,33,78}};
+	vector< vector<double> > passMatrix = {{1,2,3,4},{7,8,9,10},{5,2,1,3},{9,2,4,5}};
 	vector<double> passVector = {1,2,7,9};
 	vector<double> passVector2 = {1,2,7,8};
 

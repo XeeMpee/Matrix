@@ -18,6 +18,7 @@ class Matrix {
 public:
 	Matrix();
 	Matrix(vector<vector<T> > passMatrix);
+	Matrix(unsigned int n, unsigned int m, T value);
 	virtual ~Matrix();
 	int size[2];
 private:
@@ -65,6 +66,24 @@ inline Matrix<T>::Matrix() {
 	this->size[0] = 0;
 	this->size[1] = 0;
 }
+
+template<class T>
+inline Matrix<T>::Matrix(unsigned int n, unsigned int m, T value) {
+
+	this->matrix.clear();
+	vector<T> vect;
+	for(unsigned int i=0; i< n; i++){
+		vect.push_back(value);
+	}
+	for(unsigned int i=0; i<m; i++){
+		this->matrix.push_back(vect);
+	}
+
+	this->size[0] = n;
+	this->size[1] = m;
+}
+
+
 
 template<class T>
 inline Matrix<T>::~Matrix() {

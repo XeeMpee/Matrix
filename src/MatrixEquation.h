@@ -84,13 +84,15 @@ void MatrixEquation<T>::setEquation(vector<vector<T> > A, vector<T> b) {
 template<class T>
 	Matrix<T> MatrixEquation<T>::solvingLU() {
 	Matrix<T> tmpUpper = this->A;
-	Matrix<T> tmpLower;
+	Matrix<T> tmpLower(this->A.size[0], this->A.size[1], 0);
 	T tmpCoeff;
 
 
 	for(int i=0; i< this->A.size[1]; i++){
+		vector<T> coeffVect;
 		for(int j=i+1; j < this->A.size[0]; j++){
 			tmpCoeff = tmpUpper[j][i] / tmpUpper[i][i];
+			tmpLower[j][i] = tmpCoeff;
 			tmpUpper[j] = Matrix<T>::substractRows(tmpUpper[j], tmpUpper[i], tmpCoeff);
 			}
 		cout << endl;
