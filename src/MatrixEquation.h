@@ -42,7 +42,7 @@ public:
 
 	//# Solving:
 	Matrix<T> solvingLU();
-	static Matrix<T> upperMatrixSolving();
+	static Matrix<T> upperMatrixSolving(Matrix<T>& upperMatrix, Matrix<T>& b);
 
 	//# PrintOuts:
 	void printInfo();
@@ -118,18 +118,32 @@ template<class T>
 		}
 	}
 
-	return gaussUpper;
+	this->x = upperMatrixSolving(gaussUpper, gaussB);
+	return this->x;
 }
 
 //# UpperMatrix solving:
 
 template<class T>
-Matrix<T> MatrixEquation<T>::upperMatrixSolving(){
+Matrix<T> MatrixEquation<T>::upperMatrixSolving(Matrix<T>& upperMatrix, Matrix<T>& b){
+
 	vector<T> resultVect;
+	int n = upperMatrix.size[0]-1;
 
-	for(int i=this->gaussUpper.size[0]; i--){
-
+	T x = b[0][n]/upperMatrix[n][n];
+	resultVect.push_back(x);
+	for(int i= n-1; i >= 0; i--){
+		T tmp = 0;
+		for(int j = i+1; j<n; j++){
+			tmp += upperMatrix[i][j]*resultVect[n-j];
+		}
+		x = (b[0][i] - tmp) / upperMatrix[i][i];
+		resultVect.push_back(x);
 	}
+
+	Matrix<T> retMatrix;
+	retMatrix.push(resultVect);
+	return retMatrix;
 
 }
 
@@ -141,7 +155,7 @@ void MatrixEquation<T>::printInfo() {
 	cout << "Matrix b: " << endl;
 	this->b.printInfo();
 	cout << "Vector x: " << endl;
-	this->b.printInfo();
+	this->x.printInfo();
 	cout << "UpperMatrix: " << endl;
 	this->gaussUpper.printInfo();
 	cout << "LowerMatrix: " << endl;
