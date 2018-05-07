@@ -42,7 +42,7 @@ public:
 
 	//# Solving:
 	Matrix<T> solvingLU();
-	Matrix<T> upperMatrixSolving();
+	static Matrix<T> upperMatrixSolving();
 
 	//# PrintOuts:
 	void printInfo();
@@ -85,51 +85,69 @@ void MatrixEquation<T>::setEquation(vector<vector<T> > A, vector<T> b) {
 //# LU:
 template<class T>
 	Matrix<T> MatrixEquation<T>::solvingLU() {
-	Matrix<T> tmpUpper = this->A;
-	Matrix<T> tmpLower(this->A.size[0], this->A.size[1], 0);
+
+	gaussUpper = this->A;
+	gaussLower.setMatrix(this->A.size[0], this->A.size[1], 0);
+	gaussB = this->b;
 	T tmpCoeff;
 
 
-	for(int i=0; i< tmpUpper.size[1]; i++){
+	for(int i=0; i< gaussUpper.size[1]; i++){
 		vector<T> coeffVect;
-		for(int j=i+1; j < tmpUpper.size[0]; j++){
-			if(tmpUpper[i][i] == 0){
-				int myMax = tmpUpper.maxInColumnIndex(i);
-				cout << myMax;
-				vector<T> tmpVect = tmpUpper[i];
-				tmpUpper[i] = tmpUpper[myMax];
-				tmpUpper[myMax] = tmpVect;
+		for(int j=i+1; j < gaussUpper.size[0]; j++){
+			if(gaussUpper[i][i] == 0){
+				int myMax = gaussUpper.maxInColumnIndex(i);
+
+				vector<T> tmpVect = gaussUpper[i];
+				gaussUpper[i] = gaussUpper[myMax];
+				gaussUpper[myMax] = tmpVect;
+
+				double tmpDouble = gaussB[0][i];
+				gaussB[0][i] = 	gaussB[0][myMax];
+				gaussB[0][myMax] = tmpDouble;
+
 				j--;
 				continue;
 			}
 
-			tmpCoeff = tmpUpper[j][i] / tmpUpper[i][i];
-			tmpLower[j][i] = tmpCoeff;
-			tmpUpper[j] = Matrix<T>::substractRows(tmpUpper[j], tmpUpper[i], tmpCoeff);
-			tmpUpper[j][i] = 0;
+			tmpCoeff = gaussUpper[j][i] / gaussUpper[i][i];
+			gaussLower[j][i] = tmpCoeff;
+			gaussUpper[j] = Matrix<T>::substractRows(gaussUpper[j], gaussUpper[i], tmpCoeff);
+			gaussB[0][j] -= gaussB[0][j-1]*tmpCoeff;
+			gaussUpper[j][i] = 0;
 		}
 	}
 
-
-	this->gaussUpper = tmpUpper;
-	this->gaussLower = tmpLower;
-	return tmpUpper;
+	return gaussUpper;
 }
 
 //# UpperMatrix solving:
 
+template<class T>
+Matrix<T> MatrixEquation<T>::upperMatrixSolving(){
+	vector<T> resultVect;
+
+	for(int i=this->gaussUpper.size[0]; i--){
+
+	}
+
+}
 
 //# PrintOuts:
 template<class T>
 void MatrixEquation<T>::printInfo() {
 	cout << "Matrix A: " << endl;
 	this->A.printInfo();
+	cout << "Matrix b: " << endl;
+	this->b.printInfo();
 	cout << "Vector x: " << endl;
 	this->b.printInfo();
 	cout << "UpperMatrix: " << endl;
 	this->gaussUpper.printInfo();
 	cout << "LowerMatrix: " << endl;
 	this->gaussLower.printInfo();
+	cout << "GaussB: " << endl;
+	this->gaussB.printInfo();
 }
 
 #endif /* MATRIXEQUATION_H_ */

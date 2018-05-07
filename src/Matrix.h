@@ -30,6 +30,7 @@ public:
 	//# Setters, getters:
 	void setMatrix(vector<vector<T> > passMatrix);
 	void setMatrix(vector<T> passVector);
+	void setMatrix(unsigned int n, unsigned int m, T value);
 	T getMatrix();
 
 	//# Basic operations:
@@ -70,18 +71,7 @@ inline Matrix<T>::Matrix() {
 
 template<class T>
 inline Matrix<T>::Matrix(unsigned int n, unsigned int m, T value) {
-
-	this->matrix.clear();
-	vector<T> vect;
-	for(unsigned int i=0; i< n; i++){
-		vect.push_back(value);
-	}
-	for(unsigned int i=0; i<m; i++){
-		this->matrix.push_back(vect);
-	}
-
-	this->size[0] = n;
-	this->size[1] = m;
+	this->setMatrix(n,n,value);
 }
 
 
@@ -106,6 +96,21 @@ inline void Matrix<T>::setMatrix(vector<T> passVector) {
 	this->matrix.push_back(passVector);
 	this->size[0] = this->matrix.size();
 	this->size[1] = this->matrix[0].size();
+}
+
+template<class T>
+inline void Matrix<T>::setMatrix(unsigned int n, unsigned int m, T value) {
+	this->matrix.clear();
+	vector<T> vect;
+	for(unsigned int i=0; i< n; i++){
+		vect.push_back(value);
+	}
+	for(unsigned int i=0; i<m; i++){
+		this->matrix.push_back(vect);
+	}
+
+	this->size[0] = n;
+	this->size[1] = m;
 }
 
 //# Basic operations:
@@ -185,6 +190,7 @@ vector<T> Matrix<T>::substractRows(vector<T> rowOne, vector<T> rowTwo, T coeff){
 //# Overload operators:
 template<class T>
 inline Matrix<T>&  Matrix<T>::operator= (vector<vector<T> > & passMatrix){
+	this->matrix.clear();
 	this->matrix = passMatrix;
 	return *this;
 }

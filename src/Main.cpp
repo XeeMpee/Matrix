@@ -23,15 +23,15 @@ int main() {
 	vector<double> passVector2 = {1,2,7,8};
 
 
-	Matrix<double> myMatrix;
-	myMatrix.setMatrix(passMatrix);
+//	Matrix<double> myMatrix;
+//	myMatrix.setMatrix(passMatrix);
 //	myMatrix.printInfo();
 //	myMatrix.setMatrix(passVector);
 //	myMatrix.printInfo();
-
-	myMatrix[1][2];
-	myMatrix[1][2] = 12;
-	cout << "!!!";
+//
+//	myMatrix[1][2];
+//	myMatrix[1][2] = 12;
+//	cout << "!!!";
 
 	MatrixEquation<double> myEquation;
 	myEquation.setEquation(passMatrix, passVector);
