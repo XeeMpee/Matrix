@@ -39,6 +39,7 @@ private:
 public:
 	//# Setters and getters:
 	void setEquation(vector<vector<T> > A, vector<T> b);
+	void setB(vector<T> b);
 
 	//# Solving:
 	Matrix<T> solvingLU();
@@ -82,9 +83,29 @@ void MatrixEquation<T>::setEquation(vector<vector<T> > A, vector<T> b) {
 	this->changedA = true;
 }
 
+template<class T>
+void MatrixEquation<T>::setB(vector<T> b) {
+	this->b.clear();
+	this->x.clear();
+	this->b.push(b);
+}
+
 //# LU:
 template<class T>
 	Matrix<T> MatrixEquation<T>::solvingLU() {
+
+
+	if(changedA == false){
+		int ln = gaussLower.size[0];
+		for(int i=1; i < ln; i++){
+			for(int j=0; gaussLower[i][j] != 0; j++){
+				gaussB[0][i] -= gaussB[0][j]*gaussLower[i][j];
+			}
+		}
+		this->x = upperMatrixSolving(gaussUpper, gaussB);
+		return this->x;
+	}
+
 
 	gaussUpper = this->A;
 	gaussLower.setMatrix(this->A.size[0], this->A.size[1], 0);
@@ -113,8 +134,16 @@ template<class T>
 			tmpCoeff = gaussUpper[j][i] / gaussUpper[i][i];
 			gaussLower[j][i] = tmpCoeff;
 			gaussUpper[j] = Matrix<T>::substractRows(gaussUpper[j], gaussUpper[i], tmpCoeff);
-			gaussB[0][j] -= gaussB[0][i]*tmpCoeff;
 			gaussUpper[j][i] = 0;
+		}
+	}
+
+	this->changedA = false;
+
+	int ln = gaussLower.size[0];
+	for(int i=1; i < ln; i++){
+		for(int j=0; gaussLower[i][j] != 0; j++){
+			gaussB[0][i] -= gaussB[0][j]*gaussLower[i][j];
 		}
 	}
 
