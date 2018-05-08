@@ -113,7 +113,7 @@ template<class T>
 			tmpCoeff = gaussUpper[j][i] / gaussUpper[i][i];
 			gaussLower[j][i] = tmpCoeff;
 			gaussUpper[j] = Matrix<T>::substractRows(gaussUpper[j], gaussUpper[i], tmpCoeff);
-			gaussB[0][j] -= gaussB[0][j-1]*tmpCoeff;
+			gaussB[0][j] -= gaussB[0][i]*tmpCoeff;
 			gaussUpper[j][i] = 0;
 		}
 	}
@@ -134,7 +134,7 @@ Matrix<T> MatrixEquation<T>::upperMatrixSolving(Matrix<T>& upperMatrix, Matrix<T
 	resultVect.push_back(x);
 	for(int i= n-1; i >= 0; i--){
 		T tmp = 0;
-		for(int j = i+1; j<n; j++){
+		for(int j = i+1; j<=n; j++){
 			tmp += upperMatrix[i][j]*resultVect[n-j];
 		}
 		x = (b[0][i] - tmp) / upperMatrix[i][i];
